@@ -14,7 +14,7 @@
  */
 import fs from 'fs/promises';
 import { Mina, NetworkId, PrivateKey } from 'o1js';
-import { Add } from './Add.js';
+import { Reclaim } from './Reclaim.js';
 
 // check command line arg
 let deployAlias = process.argv[2];
@@ -66,36 +66,36 @@ const fee = Number(config.fee) * 1e9; // in nanomina (1 billion = 1.0 mina)
 Mina.setActiveInstance(Network);
 let feepayerAddress = feepayerKey.toPublicKey();
 let zkAppAddress = zkAppKey.toPublicKey();
-let zkApp = new Add(zkAppAddress);
+let zkApp = new Reclaim(zkAppAddress);
 
 // compile the contract to create prover keys
 console.log('compile the contract...');
-await Add.compile();
+await Reclaim.compile();
 
-try {
-  // call update() and send transaction
-  console.log('build transaction and create proof...');
-  let tx = await Mina.transaction(
-    { sender: feepayerAddress, fee },
-    async () => {
-      await zkApp.update();
-    }
-  );
-  await tx.prove();
+// try {
+//   // call update() and send transaction
+//   console.log('build transaction and create proof...');
+//   let tx = await Mina.transaction(
+//     { sender: feepayerAddress, fee },
+//     async () => {
+//       await zkApp.update();
+//     }
+//   );
+//   await tx.prove();
 
-  console.log('send transaction...');
-  const sentTx = await tx.sign([feepayerKey]).send();
-  if (sentTx.status === 'pending') {
-    console.log(
-      '\nSuccess! Update transaction sent.\n' +
-        '\nYour smart contract state will be updated' +
-        '\nas soon as the transaction is included in a block:' +
-        `\n${getTxnUrl(config.url, sentTx.hash)}`
-    );
-  }
-} catch (err) {
-  console.log(err);
-}
+//   console.log('send transaction...');
+//   const sentTx = await tx.sign([feepayerKey]).send();
+//   if (sentTx.status === 'pending') {
+//     console.log(
+//       '\nSuccess! Update transaction sent.\n' +
+//         '\nYour smart contract state will be updated' +
+//         '\nas soon as the transaction is included in a block:' +
+//         `\n${getTxnUrl(config.url, sentTx.hash)}`
+//     );
+//   }
+// } catch (err) {
+//   console.log(err);
+// }
 
 function getTxnUrl(graphQlUrl: string, txnHash: string | undefined) {
   const hostName = new URL(graphQlUrl).hostname;
