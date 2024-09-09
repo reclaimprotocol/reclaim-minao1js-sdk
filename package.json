@@ -1,9 +1,13 @@
 {
-  "name": "reclaim-mina",
+  "name": "@reclaimprotocol/minao1js-sdk",
   "version": "0.1.0",
   "description": "",
   "author": "",
-  "license": "Apache-2.0",
+  "license": "See License in <https://github.com/reclaimprotocol/.github/blob/main/LICENSE>",
+  "bugs": {
+    "url": "https://github.com/reclaimprotocol/reclaim-minao1js-sdk/issues"
+  },
+  "homepage": "https://github.com/reclaimprotocol/reclaim-minao1js-sdk/",
   "keywords": [
     "mina-zkapp",
     "mina-zk-app",
